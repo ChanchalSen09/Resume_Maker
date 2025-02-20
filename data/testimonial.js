@@ -11,7 +11,7 @@ export const testimonial = [
     quote:
       "The industry insights helped me pivot my career successfully. The salary data was spot-on!",
     author: "Aditya Verma",
-    image: "https://randomuser.me/api/portraits/men/75.jpg",
+    image: "https://randomuser.me/api/portraits/men/76.jpg",
     role: "Software Engineer",
     company: "Peppyhop",
   },
@@ -20,7 +20,7 @@ export const testimonial = [
       "My resume's ATS score improved significantly. Got more interviews in two weeks than in six months!",
     author: "Samroj Khan",
     image: "https://randomuser.me/api/portraits/men/74.jpg",
-    role: "Graffic Designer",
+    role: "UIUX Developer",
     company: "Freelancer",
   },
 ];
