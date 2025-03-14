@@ -27,6 +27,21 @@ const formatDisplayDate = (dateString) => {
   return format(date, "MMM yyyy");
 };
 
+const PLACEHOLDER_FOR_INPUT = {
+  Experience: {
+    firstInput: 'Title/Position',
+    secondInput:'Organization/Company'
+  },
+  Education: {
+    firstInput: 'Course Name',
+    secondInput:'Branch/Specialization'
+  },
+  Project: {
+    firstInput: 'Project Name',
+    secondInput: 'Project Field'
+  }
+}
+
 export function EntryForm({ type, entries, onChange }) {
   const [isAdding, setIsAdding] = useState(false);
 
@@ -142,7 +157,7 @@ export function EntryForm({ type, entries, onChange }) {
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Input
-                  placeholder="Title/Position"
+                  placeholder={PLACEHOLDER_FOR_INPUT[type].firstInput}
                   {...register("title")}
                   error={errors.title}
                 />
@@ -152,7 +167,7 @@ export function EntryForm({ type, entries, onChange }) {
               </div>
               <div className="space-y-2">
                 <Input
-                  placeholder="Organization/Company"
+                  placeholder={PLACEHOLDER_FOR_INPUT[type].secondInput}
                   {...register("organization")}
                   error={errors.organization}
                 />
