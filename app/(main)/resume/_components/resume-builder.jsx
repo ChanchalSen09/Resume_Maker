@@ -91,7 +91,7 @@ export default function ResumeBuilder({ initialContent }) {
     if (contactInfo.twitter) parts.push(`🐦 [Twitter](${contactInfo.twitter})`);
 
     return parts.length > 0
-      ? `## <div align="center">${user.fullName}</div>
+      ? `## <div align="center">${user?.fullName}</div>
         \n\n<div align="center">\n\n${parts.join(" | ")}\n\n</div>`
       : "";
   };
@@ -114,11 +114,15 @@ export default function ResumeBuilder({ initialContent }) {
 
   const generatePDF = async () => {
     setIsGenerating(true);
+    const filename = user?.fullName
+      ? `${user.fullName.replace(" ", "_")}_Resume.pdf`
+      : "Resume.pdf";
+    
     try {
       const element = document.getElementById("resume-pdf");
       const opt = {
         margin: [15, 15],
-        filename: "resume.pdf",
+        filename,
         image: { type: "jpeg", quality: 0.98 },
         html2canvas: { scale: 2 },
         jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
