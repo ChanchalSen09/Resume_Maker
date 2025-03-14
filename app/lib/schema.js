@@ -32,7 +32,8 @@ export const contactSchema = z.object({
   mobile: z
     .string()
     .regex(/^\d+$/, "Mobile must contain only numbers")
-    .optional().or(z.literal("")),
+    .min(10)
+    .max(10),
   linkedin: z.string().url("Invalid LinkedIn URL").optional().or(z.literal("")),
   twitter: z.string().url("Invalid Twitter URL").optional().or(z.literal("")),
 });

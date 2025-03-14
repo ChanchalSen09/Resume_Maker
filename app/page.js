@@ -2,13 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import {
-  ArrowRight,
-  Trophy,
-  Target,
-  Sparkles,
-  CheckCircle2,
-} from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import HeroSection from "@/components/hero";
 import {
   Accordion,
@@ -21,6 +15,13 @@ import { features } from "@/data/features";
 import { testimonial } from "@/data/testimonial";
 import { faqs } from "@/data/faqs";
 import { howItWorks } from "@/data/howItWorks";
+
+const INDEX_TO_ROUTE = {
+  0: "/dashboard",
+  1: "/interview",
+  2: "/dashboard",
+  3: "/resume",
+};
 
 export default function LandingPage() {
   return (
@@ -40,17 +41,21 @@ export default function LandingPage() {
             {features.map((feature, index) => (
               <Card
                 key={index}
-                className="border-2 hover:border-primary transition-colors duration-300"
+                className="border-2 cursor-pointer hover:border-primary transition-colors duration-300"
               >
-                <CardContent className="pt-6 text-center flex flex-col items-center">
-                  <div className="flex flex-col items-center justify-center">
-                    {feature.icon}
-                    <h3 className="text-xl font-bold mb-2">{feature.title}</h3>
-                    <p className="text-muted-foreground">
-                      {feature.description}
-                    </p>
-                  </div>
-                </CardContent>
+                <Link href={INDEX_TO_ROUTE[index]}>
+                  <CardContent className="pt-6 text-center flex flex-col items-center">
+                    <div className="flex flex-col items-center justify-center">
+                      {feature.icon}
+                      <h3 className="text-xl font-bold mb-2">
+                        {feature.title}
+                      </h3>
+                      <p className="text-muted-foreground">
+                        {feature.description}
+                      </p>
+                    </div>
+                  </CardContent>
+                </Link>
               </Card>
             ))}
           </div>

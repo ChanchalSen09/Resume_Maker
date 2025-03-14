@@ -114,8 +114,9 @@ export default function ResumeBuilder({ initialContent }) {
 
   const generatePDF = async () => {
     setIsGenerating(true);
+    const mobileNumber = formValues?.contactInfo?.mobile || ''
     const filename = user?.fullName
-      ? `${user.fullName.replace(" ", "_")}_Resume.pdf`
+      ? `${user.fullName.replace(" ", "_")}_`+mobileNumber+`_Resume.pdf`
       : "Resume.pdf";
     
     try {
