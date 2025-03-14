@@ -29,9 +29,12 @@ export const onboardingSchema = z.object({
 
 export const contactSchema = z.object({
   email: z.string().email("Invalid email address"),
-  mobile: z.string().optional(),
-  linkedin: z.string().optional(),
-  twitter: z.string().optional(),
+  mobile: z
+    .string()
+    .regex(/^\d+$/, "Mobile must contain only numbers")
+    .optional().or(z.literal("")),
+  linkedin: z.string().url("Invalid LinkedIn URL").optional().or(z.literal("")),
+  twitter: z.string().url("Invalid Twitter URL").optional().or(z.literal("")),
 });
 
 export const entrySchema = z
