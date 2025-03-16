@@ -28,19 +28,23 @@ const formatDisplayDate = (dateString) => {
 };
 
 const PLACEHOLDER_FOR_INPUT = {
+  Internship: {
+    firstInput: "Title/Position",
+    secondInput: "Organization/Company",
+  },
   Experience: {
-    firstInput: 'Title/Position',
-    secondInput:'Organization/Company'
+    firstInput: "Title/Position",
+    secondInput: "Organization/Company",
   },
   Education: {
-    firstInput: 'Course Name',
-    secondInput:'Branch/Specialization'
+    firstInput: "Course Name",
+    secondInput: "Branch/Specialization",
   },
   Project: {
-    firstInput: 'Project Name',
-    secondInput: 'Project Field'
-  }
-}
+    firstInput: "Project Name",
+    secondInput: "Project Field",
+  },
+};
 
 export function EntryForm({ type, entries, onChange }) {
   const [isAdding, setIsAdding] = useState(false);
