@@ -67,6 +67,7 @@ export const resumeSchema = z.object({
   experience: z.array(entrySchema),
   education: z.array(entrySchema),
   projects: z.array(entrySchema),
+  internship: z.array(entrySchema),
 });
 
 export const coverLetterSchema = z.object({

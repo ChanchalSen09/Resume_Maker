@@ -30,6 +30,7 @@ export default function ResumeBuilder({ initialContent }) {
   const [previewContent, setPreviewContent] = useState(initialContent);
   const { user } = useUser();
   const [resumeMode, setResumeMode] = useState("preview");
+  const [resumeType, setResumeType] = useState("Fresher");
 
   const {
     control,
@@ -37,6 +38,7 @@ export default function ResumeBuilder({ initialContent }) {
     handleSubmit,
     watch,
     formState: { errors },
+    resetField,
   } = useForm({
     resolver: zodResolver(resumeSchema),
     defaultValues: {
@@ -46,6 +48,7 @@ export default function ResumeBuilder({ initialContent }) {
       experience: [],
       education: [],
       projects: [],
+      internship: [],
     },
   });
 
@@ -97,7 +100,8 @@ export default function ResumeBuilder({ initialContent }) {
   };
 
   const getCombinedContent = () => {
-    const { summary, skills, experience, education, projects } = formValues;
+    const { summary, skills, experience, education, projects, internship } =
+      formValues;
     return [
       getContactMarkdown(),
       summary && `## Professional Summary\n\n${summary}`,
@@ -105,6 +109,7 @@ export default function ResumeBuilder({ initialContent }) {
       entriesToMarkdown(experience, "Work Experience"),
       entriesToMarkdown(education, "Education"),
       entriesToMarkdown(projects, "Projects"),
+      entriesToMarkdown(internship, "Internship"),
     ]
       .filter(Boolean)
       .join("\n\n");
@@ -114,11 +119,11 @@ export default function ResumeBuilder({ initialContent }) {
 
   const generatePDF = async () => {
     setIsGenerating(true);
-    const mobileNumber = formValues?.contactInfo?.mobile || ''
+    const mobileNumber = formValues?.contactInfo?.mobile || "";
     const filename = user?.fullName
-      ? `${user.fullName.replace(" ", "_")}_`+mobileNumber+`_Resume.pdf`
+      ? `${user.fullName.replace(" ", "_")}_` + mobileNumber + `_Resume.pdf`
       : "Resume.pdf";
-    
+
     try {
       const element = document.getElementById("resume-pdf");
       const opt = {
@@ -149,6 +154,12 @@ export default function ResumeBuilder({ initialContent }) {
     } catch (error) {
       console.error("Save error:", error);
     }
+  };
+
+  const handleResumeType = (type) => {
+    setResumeType(type);
+    resetField("internship");
+    resetField("experience");
   };
 
   return (
@@ -199,6 +210,34 @@ export default function ResumeBuilder({ initialContent }) {
 
         <TabsContent value="edit">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+            <div className="space-y-4">
+              <h3 className="text-lg font-medium">Resume Type</h3>
+              <div className="flex gap-4">
+                <div className="flex gap-2 justify-center items-center">
+                  <label className="text-lg font-medium">Fresher</label>
+                  <Input
+                    type="radio"
+                    checked={resumeType === "Fresher"}
+                    name="resume-type"
+                    className="w-4 cursor-pointer"
+                    onChange={() => handleResumeType("Fresher")}
+                  />
+                </div>
+
+                <div className="flex gap-2 justify-center items-center">
+                  {" "}
+                  <label className="text-lg font-medium">Experience</label>
+                  <Input
+                    type="radio"
+                    checked={resumeType === "Experienced"}
+                    name="resume-type"
+                    className="w-4 cursor-pointer"
+                    onChange={() => handleResumeType("Experienced")}
+                  />
+                </div>
+              </div>
+            </div>
+
             {/* Contact Information */}
             <div className="space-y-4">
               <h3 className="text-lg font-medium">Contact Information</h3>
@@ -301,15 +340,61 @@ export default function ResumeBuilder({ initialContent }) {
               )}
             </div>
 
-            {/* Experience */}
-            <div className="space-y-4">
-              <h3 className="text-lg font-medium">Work Experience</h3>
+            {/* Experience and Internship */}
+            {resumeType === "Fresher" ? (
+              <div className="space-y-4">
+                <h3 className="text-lg font-medium">Internship</h3>
+                <Controller
+                  name="internship"
+                  control={control}
+                  render={({ field }) => (
+                    <EntryForm
+                      type={"Internship"}
+                      entries={field.value}
+                      onChange={field.onChange}
+                    />
+                  )}
+                />
+                {errors.internship && (
+                  <p className="text-sm text-red-500">
+                    {errors.internship.message}
+                  </p>
+                )}
+              </div>
+            ) : (
+              <div className="space-y-4">
+                <h3 className="text-lg font-medium">Work Experience</h3>
+                <Controller
+                  name="experience"
+                  control={control}
+                  render={({ field }) => (
+                    <EntryForm
+                      type={"Experience"}
+                      entries={field.value}
+                      onChange={field.onChange}
+                    />
+                  )}
+                />
+                {errors.experience && (
+                  <p className="text-sm text-red-500">
+                    {errors.experience.message}
+                  </p>
+                )}
+              </div>
+            )}
+
+            {/* <div className="space-y-4">
+              <h3 className="text-lg font-medium">
+                {resumeType === "Fresher" ? "Internship" : "Work Experience"}
+              </h3>
               <Controller
-                name="experience"
+                name={resumeType === "Fresher" ? "internship" : "experience"}
                 control={control}
                 render={({ field }) => (
                   <EntryForm
-                    type="Experience"
+                    type={
+                      resumeType === "Fresher" ? "Internship" : "Experience"
+                    }
                     entries={field.value}
                     onChange={field.onChange}
                   />
@@ -320,7 +405,7 @@ export default function ResumeBuilder({ initialContent }) {
                   {errors.experience.message}
                 </p>
               )}
-            </div>
+            </div> */}
 
             {/* Education */}
             <div className="space-y-4">
